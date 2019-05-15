@@ -15,14 +15,16 @@ mongoose
       { tags: [''] },
 
       // “Non-Empty” tags
-      { tags: [`tag-{Date.now()}`] },
+      { tags: [ 'non-empty' ] },
     ]);
 
-    // 👍️ Matches all documents with “Non-Empty” tags
+    // Expected: Find all documents with “Empty” tags
     const usersWithEmptyTags = await User.find({ tags: { $in: ['', null, []] } });
+    // 👍️ Works as expected
 
-    // 💥️ MongooseError [CastError]: Cast to string failed for value "[]" at path "tags" for model "User"
+    // Expected: Find all documents with “Non-Empty” tags
     const usersWithNonEmptyTags = await User.find({ tags: { $nin: ['', null, []] } });
+    // 💥️ MongooseError [CastError]: Cast to string failed for value "[]" at path "tags" for model "User"
   })
   .catch(err => {
     console.error(err);
